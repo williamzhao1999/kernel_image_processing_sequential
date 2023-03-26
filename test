@@ -1,0 +1,39 @@
+Image applyFilter(Image &image, Matrix &filter){
+    assert(image.size()==3 && filter.size()!=0);
+
+    int height = image[0].size();
+    int width = image[0][0].size();
+    int filterHeight = filter.size();
+    int filterWidth = filter[0].size();
+    int padHeight = filterHeight / 2;
+    int padWidth = filterWidth / 2;
+    int newImageHeight = height;
+    int newImageWidth = width;
+    int d,i,j,h,w;
+
+    // Add padding
+    Image paddedImage(3, Matrix(height+2*padHeight, Array(width+2*padWidth)));
+    for (d=0 ; d<3 ; d++) {
+        for (i=padHeight ; i<height+padHeight ; i++) {
+            for (j=padWidth ; j<width+padWidth ; j++) {
+                paddedImage[d][i][j] = image[d][i-padHeight][j-padWidth];
+            }
+        }
+    }
+
+    // Apply filter
+    Image newImage(3, Matrix(newImageHeight, Array(newImageWidth)));
+    for (d=0 ; d<3 ; d++) {
+        for (i=0 ; i<newImageHeight ; i++) {
+            for (j=0 ; j<newImageWidth ; j++) {
+                for (h=i ; h<i+filterHeight ; h++) {
+                    for (w=j ; w<j+filterWidth ; w++) {
+                        newImage[d][i][j] += filter[h-i][w-j]*paddedImage[d][h][w];
+                    }
+                }
+            }
+        }
+    }
+
+    return newImage;
+}
