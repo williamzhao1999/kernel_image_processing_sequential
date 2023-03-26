@@ -16,9 +16,9 @@ int main()
 
 
     //images.push_back("../images/road-7504719-4500.png");
-    images.push_back("../images/road-7504719-6000.png");
+    //images.push_back("../images/road-7504719-6000.png");
     //images.push_back("../images/road-7504719_1920.png");
-    //images.push_back("../images/road-7504719_1280.png");
+    images.push_back("../images/road-7504719_1280.png");
     //images.push_back("../images/road-7504719_640.png");
     KernelImageProcessing kip;
 
@@ -36,27 +36,30 @@ int main()
         cout << "Loading image..." << endl;
         Image image = kip.loadImage(filePath.c_str());
 
-        for(int j = 0; j < 1;j ++){
+        std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+
+        for(int j = 0; j < filters.size();j ++){
 
             std::cout << "Convoluting with "+filtersName[j]+" kernel matrix... " << std::endl;
 
-            std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+
 
             Image filteredImage = kip.convolute(image,filters[j],true);
 
-            std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-            int timeDifference = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
 
-            std::cout << "Elapsed Time: " << timeDifference << std::endl;
 
             std::cout << "Convolution completed!" << std::endl;
 
-            std::string targetFilePathName = targetPath + filtersName[j] + "_" + std::string(fs::path( filePath ).filename());
-            kip.saveImage(filteredImage, targetFilePathName.c_str());
-            filteredImage.clear();
-            std::cout << "Saved in " << targetFilePathName << std::endl;
+            //std::string targetFilePathName = targetPath + filtersName[j] + "_" + std::string(fs::path( filePath ).filename());
+            //kip.saveImage(filteredImage, targetFilePathName.c_str());
+            //filteredImage.clear();
+            //std::cout << "Saved in " << targetFilePathName << std::endl;
         }
 
+        std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+        int timeDifference = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
+
+        std::cout << "Elapsed Time: " << timeDifference << std::endl;
 
     }
 
