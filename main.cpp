@@ -7,12 +7,19 @@ namespace fs = std::filesystem;
 
 int main()
 {
-    std::list<std::string> images;
+    std::vector<std::string> images;
     std::string path = "../images/";
     std::string targetPath = "../filtered_images/";
-    for (const auto & entry : fs::directory_iterator(path))
-        images.push_back(entry.path());
+    for (const auto & entry : fs::directory_iterator(path)){
+        //images.push_back(entry.path());
+    }
 
+
+    //images.push_back("../images/road-7504719-4500.png");
+    //images.push_back("../images/road-7504719-6000.png");
+    //images.push_back("../images/road-7504719_1920.png");
+    //images.push_back("../images/road-7504719_1280.png");
+    images.push_back("../images/road-7504719_640.png");
     KernelImageProcessing kip;
 
     Matrix GaussianBlurFilter = kip.getGaussianBlurMatrix();
@@ -24,8 +31,7 @@ int main()
 
     std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
     for(int i = 0; i < images.size();i++){
-        std::string filePath = images.front();
-        images.pop_front();
+        std::string filePath = images[i];
 
         cout << "Loading image..." << endl;
         Image image = kip.loadImage(filePath.c_str());
