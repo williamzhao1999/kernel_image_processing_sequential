@@ -13,6 +13,23 @@ CSV::CSV(std::string f) : filename(f) {
 
 }
 
+void CSV::customWrite(const std::string h, std::vector<int> t, const int size){
+    std::fstream fout;
+
+    // opens an existing csv file or creates a new file.
+    fout.open(filename, std::ios::out);
+
+    fout << h << "\n";
+
+    const int sizeVector = t.size();
+    for(int i = 0; i < sizeVector; i++){
+        fout << std::to_string(i+1) + "," + std::to_string(t[i]) + "\n";
+    }
+
+    fout.close();
+
+}
+
 void CSV::write(const std::vector<int> &sTimes,
                 const std::vector<int> &pTimes,
                 const std::vector<float> &spTimes,
